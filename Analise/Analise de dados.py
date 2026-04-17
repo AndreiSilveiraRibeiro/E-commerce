@@ -6,6 +6,8 @@ produtos_vendidos = pd.read_csv(r"C:\Users\andre\OneDrive\Documents\Repositorios
 info_clientes = pd.read_csv(r"C:\Users\andre\OneDrive\Documents\Repositorios\aprendizagem\EBAC\python\Projetos\E-commerce\Dados\DIM_Customer.csv")
 info_entrega = pd.read_csv(r"C:\Users\andre\OneDrive\Documents\Repositorios\aprendizagem\EBAC\python\Projetos\E-commerce\Dados\DIM_Delivery.csv")
 
+print(info_pedidos.head())
+
 #Analisar primeiro as informações dos pedidos para ver se tem outliers
 print(info_pedidos.describe().loc[['mean', '25%', '50%', '75%', 'max']])
 
