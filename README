@@ -14,9 +14,8 @@ O projeto utiliza dados estruturados e de fontes públicas não confidenciais:
 * **Método de Acesso/Coleta:** Os dados foram obtidos via download direto de APIs de mercado e repositórios públicos, sendo armazenados em arquivos locais `.csv` para tratamento e processamento via Python.
 
 ## 📐 3. Modelagem de Dados
-Para viabilizar a análise estatística e a alimentação do painel no Looker Studio, a modelagem seguiu a estratégia de **Tabela Unificada (Flat Table)**. 
-As bases de Cotações e Indicadores Macroeconômicos passaram por um processo de junção (`Inner Join`) utilizando a variável temporal **`Data`** como chave primária de ligação. Isso permitiu correlacionar o comportamento exato de um ativo com o cenário macroeconômico vigente naquele mesmo dia de negociação.
-
+O projeto adota uma abordagem de modelagem dimensional baseada no **Esquema Estrela (Star Schema)**, ideal para ambientes de Business Intelligence. 
+A tabela fato (`FACT_Orders`) centraliza os eventos de venda e conecta-se diretamente às tabelas de dimensão através de chaves de ligação (`Id`), permitindo cruzar os dados financeiros dos pedidos com a segmentação demográfica dos clientes (`DIM_Customer`) e os dados logísticos de envio (`DIM_Delivery`).
 ## 🛠️ Tecnologias Utilizadas
 * **Python 3** (Processamento e Engenharia)
 * **Pandas & NumPy** (Limpeza, imputação de dados e cruzamento)
