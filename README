@@ -1,50 +1,46 @@
-
-@@ -1,48 +0,0 @@
-# 📊 Projeto de Parceria Semantix - Análise de Dados E-commerce
+# 📊 Projeto de Parceria Semantix - Análise de Dados de Investimentos & Macroeconomia
 
 ## 1. Dissertação sobre o Problema
-* **Descrição Detalhada:** O mercado de varejo digital (E-commerce) gera diariamente milhões de registos transacionais. O maior desafio estratégico deste setor é entender o comportamento de compra do consumidor, identificar padrões sazonais de faturamento e detetar anomalias de consumo (compras de valores desproporcionais). Este projeto aborda a problemática da otimização comercial e previsão de procura de um e-commerce generalista, focando em entender quando os clientes compram, quais os produtos líderes e como os descontos impactam o faturamento.
-* **Relevância do Problema:** Compreender os picos de venda semanais e a concentração mensal de faturamento permite que a empresa otimize stocks, planeie campanhas de marketing assertivas e evite ruturas de stock ou desperdício de capital em produtos parados.
-* **Como a Análise de Dados Soluciona:** Utilizando a análise exploratória de dados (EDA), conseguimos extrair o comportamento real da operação, segmentar os clientes por perfis de consumo através de métodos estatísticos (como o Intervalo Interquartil - IQR) e fornecer insights preditivos para a tomada de decisão da liderança.
+* **Descrição Detalhada:** No cenário financeiro atual, investidores individuais e gestores de carteiras enfrentam extrema volatilidade devido às constantes mudanças nas variáveis macroeconômicas do país. O problema central deste projeto é compreender como as oscilações da taxa básica de juros (Taxa Selic), a inflação oficial (IPCA/IGP-M) e a variação cambial (Dólar) impactam diretamente o preço de fechamento de ativos de renda variável (Ações e Fundos Imobiliários) no mercado brasileiro.
+* **Relevância do Problema:** Sem uma compreensão matemática clara dessas relações, as alocações de capital tornam-se puramente especulativas, aumentando o risco de perdas patrimoniais severas em momentos de virada de ciclo econômico (como o aumento repentino de juros).
+* **Como os Dados Solucionam:** Através da Análise Exploratória de Dados (EDA) e do cálculo de correlação estatística, conseguimos identificar o grau de sensibilidade de cada classe de ativo em relação à economia. Isso permite criar estratégias de proteção (hedge) e otimização de portfólio baseadas em fatos históricos, e não em palpites.
 
-## 2. Levantamento e Coleta das Fontes de Dados
-O projeto adota uma modelagem de dados do tipo **Star Schema** (Esquema Estrela), utilizando fontes de dados estruturadas, não confidenciais e simuladas para o cenário de retalho:
-* **`FACT_Orders.csv` (Tabela Fato):** Centraliza o histórico de transações com data da compra (`Order_Date`), subtotal, total e estado do pedido (`Purchase_Status`).
-* **`DIM_Customer.csv` (Dimensão):** Dados demográficos dos clientes cadastrados (Nome, Cidade, Estado, Região).
-* **`DIM_Products.csv` (Dimensão):** Catálogo de produtos com categorias, subcategorias e preço unitário original.
-* **`DIM_Delivery.csv` (Dimensão):** Contém os prazos, previsões e status logísticos de cada entrega.
-* **`DIM_Shopping.csv` (Dimensão):** Detalha os itens incluídos em cada carrinho de compras (Quantidade e Produto).
+## 2. Levantamento e Coleta de Fontes de Dados
+O projeto utiliza dados estruturados e de fontes públicas não confidenciais:
+* **Tabela de Carteira (`tabela_carteira_suja.csv`):** Contém os ativos mantidos no portfólio simulado (Ticker, Nome do Ativo, Tipo e Setor).
+* **Tabela de Cotações (`tabela_cotacoes_suja.csv`):** Registros históricos de preços diários de abertura, fechamento, volume e retorno diário das ações e FIIs.
+* **Tabela de Indicadores (`tabela_indicadores_suja.csv`):** Série histórica dos indicadores macroeconômicos brasileiros (Selic, IPCA, IGP-M e Câmbio do Dólar).
 
-**Método de Coleta:** Os dados foram coletados via download direto e estruturados localmente para o pipeline de processamento em Python.
+* **Método de Acesso/Coleta:** Os dados foram obtidos via download direto de APIs de mercado e repositórios públicos, sendo armazenados em arquivos locais `.csv` para tratamento e processamento via Python.
 
-### 📖 Estrutura das Tabelas
-| Tabela | Tipo de Dado | Método de Acesso | Descrição | Chave de Ligação |
-| :--- | :--- | :--- | :--- | :--- |
-| `FACT_Orders` | Estruturado (CSV) | Download Direto | Dados financeiros e status de compras | `Id` |
-| `DIM_Customer` | Estruturado (CSV) | Download Direto | Dados demográficos de clientes | `Id` / `Customer_Id` |
-| `DIM_Products` | Estruturado (CSV) | Download Direto | Catálogo e preço base de produtos | `Product_Id` |
-| `DIM_Delivery` | Estruturado (CSV) | Download Direto | Prazos e status de frete | `Id` / `Delivery_Id` |
-| `DIM_Shopping` | Estruturado (CSV) | Download Direto | Itens e quantidades do carrinho | `Id` / `Item_ID` |
+## 📐 3. Modelagem de Dados
+Para viabilizar a análise estatística e a alimentação do painel no Looker Studio, a modelagem seguiu a estratégia de **Tabela Unificada (Flat Table)**. 
+As bases de Cotações e Indicadores Macroeconômicos passaram por um processo de junção (`Inner Join`) utilizando a variável temporal **`Data`** como chave primária de ligação. Isso permitiu correlacionar o comportamento exato de um ativo com o cenário macroeconômico vigente naquele mesmo dia de negociação.
 
 ## 🛠️ Tecnologias Utilizadas
-* **Python 3** (Lógica principal de análise)
-* **Pandas** (Tratamento, limpeza e manipulação de dados)
-* **Matplotlib / Seaborn** (Validação visual e análise exploratória local)
-* **Looker Studio** (Dashboard interativo final)
+* **Python 3** (Processamento e Engenharia)
+* **Pandas & NumPy** (Limpeza, imputação de dados e cruzamento)
+* **Looker Studio** (Camada de visualização de dados e Business Intelligence)
 
-## 📈 Insights Extraídos
-Aqui estão os principais pontos descobertos durante a análise:
+## 📈 4. Relatório de Insights & Conclusões
 
-1. **Sazonalidade:** O mês de **Março** apresentou o maior volume de vendas.
-2. **Ticket Médio:** O valor médio gasto por compra confirmada foi de **R$ 2.470,23**.
-3. **Top Produtos de Faturamento:** O item **ACER Notebook Gamer Nitro** é o líder em faturamento.
-4. **Top Produtos mais Vendidos:** O item **Fone de ouvido Sem Fio QCY T27** é o líder em vendas.
-5. **Outliers:** Identifiquei pedidos "VIP" (compras acima de **R$ 8,320,23**) que representam uma excelente oportunidade para estratégias de marketing personalizado e retenção de clientes de alto valor (High-Value Customers).
-6. **Estratégia Comercial:** Identificamos um pico de volume aos **Domingos e Segundas**. Isso sugere uma oportunidade para antecipar campanhas de marketing e disparos de e-mail/notificações nas sextas-feiras e sábados, visando capturar essa demanda reprimida do início da semana.
+Após a execução dos scripts de análise e cálculo de correlação de Spearman, os seguintes insights estratégicos foram extraídos:
 
-## 🚀 Como Rodar o Projeto
-1. Clone o repositório para a sua máquina local.
-2. Certifique-se de manter as bases de dados originais guardadas na pasta `.\Dados\`.
-3. Execute o script de auditoria de dados:
-   ```bash
-   python Limpeza.py
+1. **Sensibilidade Cambial (Dólar vs Ativos):** Foi identificada uma correlação de comportamento expressiva entre a variação do Câmbio do Dólar e as ações de commodities (como `PETR4` e `VALE3`).
+   * *Sugestão de Ação:* Em cenários de previsão de alta do dólar, o investidor deve aumentar a exposição a essas empresas para capturar o ganho de receita exportadora como mecanismo de proteção patrimonial.
+2. **Resiliência de Fundos Imobiliários:** O ativo `HGLG11` (Logística) apresentou uma volatilidade de preço de fechamento significativamente menor e estabilidade quando comparado com ativos do setor financeiro em períodos de oscilação do IPCA.
+   * *Sugestão de Ação:* Utilizar Fundos Imobiliários de tijolo estruturados para compor a parcela de estabilidade e geração de renda passiva recorrente da carteira, reduzindo o desvio padrão geral do portfólio.
+3. **Tratamento de Anomalias (Outliers):** O mapeamento de dados identificou variações absurdas de preços pontuais fora da realidade de mercado (acima de R$ 2.000,00).
+   * *Sugestão de Ação:* A implementação do filtro lógico de corte no script `outliers.py` impediu que essas anomalias distorcessem o cálculo real do preço médio e desvio padrão dos ativos, garantindo que o dashboard reflita a realidade dos preços de mercado.
+
+## 🚀 Como Executar o Pipeline
+1. Certifique-se de que os arquivos sujos estão no diretório raiz do projeto.
+2. Execute o script de higienização: `python limpeza.py`
+3. Execute a remoção de anomalias: `python outliers.py`
+4. Crie as variáveis calculadas: `python manipulação.py`
+5. Calcule as correlações estatísticas e gere a base final de BI: `python Corelacao.py`
+
+## 🎨 5. Dashboard Final (Visualização Looker Studio)
+A base consolidada final tratada (`base_consolidada_investimentos.csv`) foi conectada ao Looker Studio para gerar uma interface analítica interativa.
+
+👉 **[CLIQUE AQUI PARA ACESSAR O DASHBOARD NO LOOKER STUDIO](https://datastudio.google.com/s/rqH7kL680Q0)**
